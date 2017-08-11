@@ -13,12 +13,13 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 
-public class AirlineCount {
+public class AirLineCount {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
     
 	Configuration conf = new Configuration();
     Job job = new Job(conf, "AirLine Count");
+    job.setJarByClass(AirLineCount.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(IntWritable.class);
     job.setMapperClass(AirLineMap.class);
