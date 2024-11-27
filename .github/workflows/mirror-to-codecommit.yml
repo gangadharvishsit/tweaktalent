@@ -1,0 +1,21 @@
+name: Mirror to AWS CodeCommit
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Mirror to CodeCommit
+        run: |
+          git remote add codecommit https://git-codecommit.<region>.amazonaws.com/v1/repos/tweaktalent-repo
+          git push --mirror codecommit
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CODECOMMIT_USERNAME }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CODECOMMIT_PASSWORD }}
