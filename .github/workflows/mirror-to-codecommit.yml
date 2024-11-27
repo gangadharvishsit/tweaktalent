@@ -1,21 +1,29 @@
-name: Mirror to AWS CodeCommit
+name: Mirror to CodeCommit
 
 on:
   push:
     branches:
-      - master
+      - master  # Sync on changes to the master branch
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      # Step 1: Checkout the GitHub repository
+      - name: Checkout GitHub Repository
         uses: actions/checkout@v3
 
+      # Step 2: Configure AWS Credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # Step 3: Mirror to CodeCommit
       - name: Mirror to CodeCommit
         run: |
-          git remote add codecommit https://git-codecommit.<region>.amazonaws.com/v1/repos/tweaktalent-repo
+          git remote add codecommit https://git-codecommit.us-east-1.amazonaws.com/v1/repos/tweaktalent-repo
           git push --mirror codecommit
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.CODECOMMIT_USERNAME }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.CODECOMMIT_PASSWORD }}
