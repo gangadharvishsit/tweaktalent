@@ -1,1 +1,1 @@
-"Test mirroring to CodeCommit"
+"Test mirroring to CodeCommit - Update " 
